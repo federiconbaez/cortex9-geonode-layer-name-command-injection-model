@@ -1,0 +1,125 @@
+{
+ "note": "Hand-written. Strings are inert; ogr2ogr and shells are never executed. 'id' is the GHSA's own harmless example command name.",
+ "cases": [
+  {
+   "id": "p01_semicolon_id",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "x;id",
+   "original_name": "layer",
+   "expected": {
+    "pre": "SHELL_METACHAR",
+    "post": "ONE_LAYER"
+   },
+   "why": "x;id stays one argv slot after split(' ') but shell=True (1408290c:L53) still runs the second command"
+  },
+  {
+   "id": "p02_dollar_paren",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "$(id)",
+   "original_name": "layer",
+   "expected": {
+    "pre": "SHELL_METACHAR",
+    "post": "ONE_LAYER"
+   },
+   "why": "$(id) stays one token after split(' ') but shell=True expands it; post quotes + shell=False"
+  },
+  {
+   "id": "p03_backticks",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "`id`",
+   "original_name": "layer",
+   "expected": {
+    "pre": "SHELL_METACHAR",
+    "post": "ONE_LAYER"
+   },
+   "why": "backtick substitution under shell=True"
+  },
+  {
+   "id": "p04_ampersand",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "a&b",
+   "original_name": "layer",
+   "expected": {
+    "pre": "SHELL_METACHAR",
+    "post": "ONE_LAYER"
+   },
+   "why": "& under shell=True"
+  },
+  {
+   "id": "p05_pipe",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "a|b",
+   "original_name": "layer",
+   "expected": {
+    "pre": "SHELL_METACHAR",
+    "post": "ONE_LAYER"
+   },
+   "why": "| under shell=True"
+  },
+  {
+   "id": "p06_space_in_alternate",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "my layer",
+   "original_name": "layer",
+   "expected": {
+    "pre": "EXTRA_ARGV",
+    "post": "ONE_LAYER"
+   },
+   "why": "unquoted -nln value with a space becomes two argv slots pre"
+  },
+  {
+   "id": "p07_injection_in_original_name",
+   "class": "pos",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "ok",
+   "original_name": "x\"; id; echo \"",
+   "expected": {
+    "pre": "EXTRA_ARGV",
+    "post": "ONE_LAYER"
+   },
+   "why": "breaking out of the double quotes around original_name"
+  },
+  {
+   "id": "n01_plain",
+   "class": "neg",
+   "input_file": "/tmp/lab.shp",
+   "alternate": "roads",
+   "original_name": "roads",
+   "expected": {
+    "pre": "ONE_LAYER",
+    "post": "ONE_LAYER"
+   },
+   "why": "ordinary layer name"
+  },
+  {
+   "id": "n02_underscore_dot",
+   "class": "neg",
+   "input_file": "/data/a.shp",
+   "alternate": "my_layer.v2",
+   "original_name": "my_layer.v2",
+   "expected": {
+    "pre": "ONE_LAYER",
+    "post": "ONE_LAYER"
+   },
+   "why": "safe punctuation"
+  },
+  {
+   "id": "o01_quoted_path_spaces_pre_split",
+   "class": "observation",
+   "input_file": "/tmp/my file.shp",
+   "alternate": "ok",
+   "original_name": "ok",
+   "expected": {
+    "pre": "EXTRA_ARGV",
+    "post": "ONE_LAYER"
+   },
+   "why": "MODEL OBSERVATION: pre wraps input_file in quotes then splits on spaces (1408290c:L52), so a path with spaces still breaks; post shlex.split keeps it. Not verified as a separate CVE finding."
+  }
+ ]
+}

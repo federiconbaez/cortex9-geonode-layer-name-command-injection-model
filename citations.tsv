@@ -1,0 +1,12 @@
+tag	start	end	sha256	what
+1408290c	9	9	ae77d9b875d58903c82e6341e1e193b35e19965b4201f493dc9912fa0b4bfe54	post: import shlex
+1408290c	17	19	12f61f5e6bb847782f8d664bce652e6fd937665a03a39c17e93f4df447b1a6bb	pre: input_file in double quotes, alternate unquoted
+1408290c	19	19	8a02e01c459cc6028cc167efe9a7cde59f9c0279db0eaf66b3ab2e286863c51d	pre: unquoted alternate, double-quoted original_name
+1408290c	20	22	ff835650f3ee8dbaa269230bcb5b143bd90cdd6c2b69105cea876282d93d10d8	post: shlex.quote on the three fields
+1408290c	17	22	f852c83f6cee052f0f5c2c61bb8547161adecfe5e6c312fb040bb6f2317f2a6c	the whole options fragment, pre and post
+1408290c	41	41	55980d695622e30cd8498f65b45bab8e472c3acbd92664d11ca89ab4ee83574e	post: shlex.split into an argv list
+1408290c	45	62	3c3f119a92645d0a19fc4401db2b817ace749343da091032480c1a338136bd61	OGR2OGR_COPY_WITH_DUMP pipe branch (out of scope)
+1408290c	52	52	ee42fda06bf9ae87fc9cfa8693f9eaa6de10949529471205633883402df8f1c1	pre: split on single spaces
+1408290c	53	53	b2de721993a9fdbbb1759e3cd39b5e83ef77b09555fac069dcc477c6dde58367	pre: joined string passed to a shell
+1408290c	52	53	3f1d5c737db7d11ff013a4df0adda89b89bbd24fc1b748b1c619d86c4152fcc6	pre: split then shell=True
+1408290c	65	65	2f943f48dde78874fd03080331530d102d51eb0eab14e8ba0391d76d0d812eed	post: argv list with shell=False
